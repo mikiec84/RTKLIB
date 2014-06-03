@@ -870,23 +870,10 @@ static int execses(gtime_t ts, gtime_t te, double ti, const prcopt_t *popt,
 {
     FILE *fp;
     prcopt_t popt_=*popt;
-    char tracefile[1024],statfile[1024];
+    char statfile[1024];
     
     trace(3,"execses : n=%d outfile=%s\n",n,outfile);
     
-    /* open debug trace */
-    if (flag&&sopt->trace>0) {
-        if (*outfile) {
-            strcpy(tracefile,outfile);
-            strcat(tracefile,".trace");
-        }
-        else {
-            strcpy(tracefile,fopt->trace);
-        }
-        traceclose();
-        traceopen(tracefile);
-        tracelevel(sopt->trace);
-    }
     /* read obs and nav data */
     if (!readobsnav(ts,te,ti,infile,index,n,&popt_,&obss,&navs,stas)) return 0;
     
@@ -1128,8 +1115,23 @@ extern int postpos(gtime_t ts, gtime_t te, double ti, double tu,
     gtime_t tts,tte,ttte;
     double tunit,tss;
     int i,j,k,nf,stat=0,week,flag=1,index[MAXINFILE]={0};
-    char *ifile[MAXINFILE],ofile[1024],*ext;
+    char *ifile[MAXINFILE],ofile[1024],*ext,tracefile[1024];
     
+    /* open debug trace
+     * FIXME: What about flag? */
+    if (flag&&sopt->trace>0) {
+        if (*outfile) {
+            strcpy(tracefile,outfile);
+            strcat(tracefile,".trace");
+        }
+        else {
+            strcpy(tracefile,fopt->trace);
+        }
+        traceclose();
+        traceopen(tracefile);
+        tracelevel(sopt->trace);
+    }
+
     trace(3,"postpos : ti=%.0f tu=%.0f n=%d outfile=%s\n",ti,tu,n,outfile);
     
     /* open processing session */
