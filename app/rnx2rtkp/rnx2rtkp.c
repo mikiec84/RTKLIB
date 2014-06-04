@@ -20,7 +20,7 @@
 static const char rcsid[]="$Id: rnx2rtkp.c,v 1.1 2008/07/17 21:55:16 ttaka Exp $";
 
 #define PROGNAME    "rnx2rtkp"          /* program name */
-#define MAXFILE     8                   /* max number of input files */
+#define MAXFILE     1000                /* max number of input files */
 
 /* help text -----------------------------------------------------------------*/
 static const char *help[]={
