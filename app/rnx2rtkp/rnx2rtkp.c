@@ -72,8 +72,9 @@ static const char *help[]={
 extern int showmsg(char *format, ...)
 {
     va_list arg;
+    if (format[0] == '\0') return 0;
     va_start(arg,format); vfprintf(stderr,format,arg); va_end(arg);
-    fprintf(stderr,"\r");
+    fprintf(stderr,"\n");
     return 0;
 }
 extern void settspan(gtime_t ts, gtime_t te) {}

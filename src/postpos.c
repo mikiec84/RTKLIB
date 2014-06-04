@@ -187,14 +187,19 @@ static int inputobs(obsd_t *obs, int solq, const prcopt_t *popt)
     gtime_t time={0};
     char path[1024];
     int i,nu,nr,n=0;
+    static int logcnt=0;
+    int loginterval = 2*60;
     
     trace(3,"infunc  : revs=%d iobsu=%d iobsr=%d isbs=%d\n",revs,iobsu,iobsr,isbs);
     
     if (0<=iobsu&&iobsu<obss.n) {
         settime((time=obss.data[iobsu].time));
-        if (checkbrk("processing : %s Q=%d",time_str(time,0),solq)) {
-            aborts=1; showmsg("aborted"); return -1;
+        if (logcnt % loginterval == 0) {
+            if (checkbrk("processing : %s Q=%d",time_str(time,0),solq)) {
+                aborts=1; showmsg("aborted"); return -1;
+            }
         }
+        logcnt++;
     }
     if (!revs) { /* input forward data */
         if ((nu=nextobsf(&obss,&iobsu,1))<=0) return -1;
